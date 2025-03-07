@@ -3,7 +3,7 @@
 ## Overview
 
 Mega City Cab is a cab service based in Colombo, where customers use cabs on a daily basis. The system manages bookings, calculates bills, and handles other cab-related services. This React-based web application will streamline operations by providing a more effective and efficient management solution.
-![Mega City Cab Logo](src/assets/all-images/login/Black%20and%20Orange%20Car%20Rent%20Logo.png)
+
 ## Features
 
 1. **Authentication System**
