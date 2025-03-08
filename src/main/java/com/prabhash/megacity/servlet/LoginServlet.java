@@ -18,10 +18,10 @@ import java.io.PrintWriter;
 @WebServlet("/login")
 public class LoginServlet extends HttpServlet {
 
-    private final UserService userService = new UserServiceImpl();
+    public UserService userService = new UserServiceImpl();
 
     @Override
-    protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, java.io.IOException {
+    public void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, java.io.IOException {
         response.setContentType("application/json");
         response.setCharacterEncoding("UTF-8");
 
