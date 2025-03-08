@@ -1,5 +1,6 @@
 package com.prabhash.megacity.servlet;
 
+import com.prabhash.megacity.config.ResponseMessage;
 import com.prabhash.megacity.entity.User;
 import com.prabhash.megacity.service.UserService;
 import com.prabhash.megacity.service.WhatsAppMessageService;
@@ -18,9 +19,9 @@ import java.io.PrintWriter;
 
 @WebServlet("/register")
 public class RegisterServlet extends HttpServlet {
-    private final UserService userService = new UserServiceImpl();
-    private WhatsAppMessageService messageService = new WhatsAppMessageServiceImpl();
-    private EmailService emailService = new EmailService();
+    UserService userService = new UserServiceImpl();
+    WhatsAppMessageService messageService = new WhatsAppMessageServiceImpl();
+    EmailService emailService = new EmailService();
 
     SmsServiceImpl smsService = new SmsServiceImpl();
 
@@ -52,10 +53,12 @@ public class RegisterServlet extends HttpServlet {
             //whatsapp
             messageService.sendRegistrationWhatsAppMessage(phone, username);
             response.setStatus(HttpServletResponse.SC_OK); // 200 OK
-            out.print(gson.toJson("{ \"message\": \"Registration successful!\" }"));
+            ResponseMessage responseMessage = new ResponseMessage("Registration successful!");
+            out.print(gson.toJson(responseMessage));
         } else {
             response.setStatus(HttpServletResponse.SC_BAD_REQUEST); // 400 Bad Request
-            out.print(gson.toJson("{ \"error\": \"Failed to register.\" }"));
+            ResponseMessage responseMessage = new ResponseMessage("Failed to register.");
+            out.print(gson.toJson(responseMessage));
         }
 
         out.flush();
