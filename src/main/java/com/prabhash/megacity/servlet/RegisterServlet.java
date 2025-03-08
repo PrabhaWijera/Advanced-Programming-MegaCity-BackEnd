@@ -48,7 +48,7 @@ public class RegisterServlet extends HttpServlet {
 
         if (isRegistered) {
             //normal sms
-            //  smsService.sendSms(user.getPhone(), "Congratulations " + user.getUsername() + " on successfully registering!");
+              smsService.sendSms(user.getPhone(), "Congratulations " + user.getUsername() + " on successfully registering!");
             //whatsapp
             messageService.sendRegistrationWhatsAppMessage(phone, username);
             response.setStatus(HttpServletResponse.SC_OK); // 200 OK
