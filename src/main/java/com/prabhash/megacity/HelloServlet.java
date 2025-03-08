@@ -10,10 +10,10 @@ public class HelloServlet extends HttpServlet {
     private String message;
 
     public void init() {
-        System.out.println("in war of EGO , the loser always wins !!!        ");
+        System.out.println("in war of EGO , the loser always wins !!!");
         System.out.println("IF somebody had to die I'D rather be me");
 
-        message = "oohh you think darkness is your ally you merely adopted the dark. iwas born in it.molded by it" ;
+        message = "HI" ;
 
     }
 

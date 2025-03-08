@@ -106,6 +106,7 @@ public class UserManageServlet extends HttpServlet {
             boolean isDeleted = userService.deleteUser(id); // Assuming deleteUserById is your service method
             if (isDeleted) {
                 response.setStatus(HttpServletResponse.SC_OK); // 200 OK
+                response.getWriter().write("User Found");
             } else {
                 response.setStatus(HttpServletResponse.SC_NOT_FOUND); // 404 Not Found
                 response.getWriter().write("User not found.");
