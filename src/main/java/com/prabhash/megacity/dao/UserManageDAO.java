@@ -132,6 +132,25 @@ public class UserManageDAO {
 
 
 
+    public String getUserEmailById(int userId) {
+        String query = "SELECT email FROM users WHERE id = ?";
+        String userEmail = null;
+
+        try (Connection connection = DBConfig.getConnection();
+             PreparedStatement preparedStatement = connection.prepareStatement(query)) {
+
+            preparedStatement.setInt(1, userId); // Set userId parameter in the query
+            ResultSet resultSet = preparedStatement.executeQuery();
+
+            if (resultSet.next()) {
+                userEmail = resultSet.getString("email"); // Extract email from result
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+
+        return userEmail;
+    }
 
 
 

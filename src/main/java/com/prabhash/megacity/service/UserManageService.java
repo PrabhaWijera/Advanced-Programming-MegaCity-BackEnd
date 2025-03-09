@@ -12,4 +12,5 @@ public interface UserManageService {
     boolean updateUser(int userId, User updatedUser);
     boolean deleteUser(int userId);
     public User getRandomDriver();
+    String getUserById(int userId);
 }

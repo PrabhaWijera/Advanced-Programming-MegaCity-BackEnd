@@ -51,4 +51,9 @@ public class UserManageServiceimpl implements UserManageService {
         int randomIndex = random.nextInt(drivers.size());  // Get a random index
         return drivers.get(randomIndex);  // Return the randomly selected driver
     }
+
+    @Override
+    public String getUserById(int userId) {
+        return userManagDAO.getUserEmailById(userId);
+    }
 }

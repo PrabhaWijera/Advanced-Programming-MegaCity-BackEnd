@@ -2,9 +2,14 @@ package com.prabhash.megacity.servlet;
 
 import com.prabhash.megacity.dto.BookingDTO;
 import com.prabhash.megacity.entity.Booking;
+import com.prabhash.megacity.entity.User;
 import com.prabhash.megacity.service.BookingService;
+import com.prabhash.megacity.service.UserManageService;
+import com.prabhash.megacity.service.UserService;
 import com.prabhash.megacity.service.impl.BookingServiceImpl;
 import com.google.gson.Gson;
+import com.prabhash.megacity.service.impl.UserManageServiceimpl;
+import com.prabhash.megacity.service.impl.UserServiceImpl;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.annotation.WebServlet;
 import jakarta.servlet.http.HttpServlet;
@@ -19,6 +24,8 @@ import java.util.List;
 public class BookingController extends HttpServlet {
     private BookingService bookingService = new BookingServiceImpl();
     private Gson gson = new Gson();
+    private final UserManageService userService = new UserManageServiceimpl();
+    EmailService emailService = new EmailService();
 
     // Handle CREATE Booking (POST)
     @Override
@@ -26,7 +33,12 @@ public class BookingController extends HttpServlet {
         BufferedReader reader = req.getReader();
         BookingDTO bookingDTO = gson.fromJson(reader, BookingDTO.class);
 
+
         boolean success = bookingService.createBooking(bookingDTO);
+        if(success){
+            String email = String.valueOf(userService.getUserById(bookingDTO.getUserId()));
+            emailService.sendTestEmail(email, " 🚕 Your Booking is Confirmed!", "Welcome to MegaCity Rentals!");
+        }
 
         resp.setContentType("application/json");
         resp.setCharacterEncoding("UTF-8");
