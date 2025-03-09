@@ -24,8 +24,7 @@ import java.util.List;
 public class BookingController extends HttpServlet {
     private BookingService bookingService = new BookingServiceImpl();
     private Gson gson = new Gson();
-    private final UserManageService userService = new UserManageServiceimpl();
-    EmailService emailService = new EmailService();
+
 
     // Handle CREATE Booking (POST)
     @Override
@@ -35,10 +34,10 @@ public class BookingController extends HttpServlet {
 
 
         boolean success = bookingService.createBooking(bookingDTO);
-        if(success){
-            String email = String.valueOf(userService.getUserById(bookingDTO.getUserId()));
-            emailService.sendTestEmail(email, " 🚕 Your Booking is Confirmed!", "Welcome to MegaCity Rentals!");
-        }
+//        if(success){
+//            String email = String.valueOf(userService.getUserById(bookingDTO.getUserId()));
+//            emailService.sendTestEmail(email, " 🚕 Your Booking is Confirmed!", "Welcome to MegaCity Rentals!");
+//        }
 
         resp.setContentType("application/json");
         resp.setCharacterEncoding("UTF-8");
