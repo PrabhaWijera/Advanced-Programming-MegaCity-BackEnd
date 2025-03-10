@@ -21,8 +21,6 @@ import jakarta.servlet.http.HttpServletResponse;
 public class PaymentServlet extends HttpServlet {
     private PaymentService paymentService = new PaymentServiceImpl();
     private Gson gson = new Gson();
-    private final UserManageService userService = new UserManageServiceimpl();
-    EmailService emailService = new EmailService();
 
     @Override
     protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
@@ -51,12 +49,9 @@ public class PaymentServlet extends HttpServlet {
 
 
             response.getWriter().write(gson.toJson("Payment processed successfully!"));
-            String SC_CREATED = String.valueOf(HttpServletResponse.SC_CREATED);
+
             response.setStatus(HttpServletResponse.SC_CREATED);
-            if(SC_CREATED ==  "CREATED"){
-                String email = String.valueOf(userService.getUserById(payment.getUserId()));
-                emailService.sendTestEmail(email, " 🚕 Your Booking is Confirmed!", "Welcome to MegaCity Rentals!");
-            }
+
 
         } catch (Exception e) {
             response.setStatus(HttpServletResponse.SC_BAD_REQUEST);
