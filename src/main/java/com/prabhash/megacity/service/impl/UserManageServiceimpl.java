@@ -1,7 +1,8 @@
 package com.prabhash.megacity.service.impl;
 
 
-import com.prabhash.megacity.dao.impl.UserManageDAO;
+import com.prabhash.megacity.dao.UserManageDAO;
+import com.prabhash.megacity.dao.impl.UserManageDAOimpl;
 import com.prabhash.megacity.entity.User;
 import com.prabhash.megacity.service.UserManageService;
 
@@ -10,7 +11,7 @@ import java.util.Random;
 
 public class UserManageServiceimpl implements UserManageService {
 
-    private UserManageDAO userManagDAO = new UserManageDAO();
+    private UserManageDAO userManagDAO = new UserManageDAOimpl();
 
     @Override
     public List<User> getAllUsers() {

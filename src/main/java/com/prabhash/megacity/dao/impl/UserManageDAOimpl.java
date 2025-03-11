@@ -1,6 +1,7 @@
 package com.prabhash.megacity.dao.impl;
 
 import com.prabhash.megacity.config.DBConfig;
+import com.prabhash.megacity.dao.UserManageDAO;
 import com.prabhash.megacity.entity.User;
 
 import java.sql.Connection;
@@ -10,7 +11,7 @@ import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
 
-public class UserManageDAO {
+public class UserManageDAOimpl implements UserManageDAO {
 
     public List<User> getAllUsers() {
         List<User> users = new ArrayList<>();
@@ -119,15 +120,21 @@ public class UserManageDAO {
     }
 
     // Map ResultSet to User object
-    private User mapResultSetToUser(ResultSet resultSet) throws SQLException {
+    public User mapResultSetToUser(ResultSet resultSet)  {
         User user = new User();
-        user.setId(resultSet.getInt("id"));
+        try {
+            user.setId(resultSet.getInt("id"));
+
         user.setUsername(resultSet.getString("username"));
         user.setPassword(resultSet.getString("password"));
         user.setEmail(resultSet.getString("email"));
         user.setPhone(resultSet.getString("phone"));
         user.setRole(resultSet.getString("role"));
+
         return user;
+        } catch (SQLException e) {
+            throw new RuntimeException(e);
+        }
     }
 
 
