@@ -28,8 +28,8 @@ import java.util.List;
         maxFileSize = 1024 * 1024 * 10,    // 10MB
         maxRequestSize = 1024 * 1024 * 50) // 50MB
 public class CarImageServlet extends HttpServlet {
-    private CarService carService = new CarServiceImpl();
-    private ImageService imageService = new ImageServiceImpl();
+    CarService carService = new CarServiceImpl();
+    ImageService imageService = new ImageServiceImpl();
 
     // Handle GET request to retrieve cars or images
     @Override
@@ -67,7 +67,7 @@ public class CarImageServlet extends HttpServlet {
 
 
     // Add a car with an image
-    private void addCarWithImage(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+    public void addCarWithImage(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
         String name = request.getParameter("name");
         String model = request.getParameter("model");
         String plate_number = request.getParameter("plate_number");
@@ -217,16 +217,18 @@ public class CarImageServlet extends HttpServlet {
     }
 
     // Send success response with message
-    private void sendSuccessResponse(HttpServletResponse response, String message) throws IOException {
+    void sendSuccessResponse(HttpServletResponse response, String message) throws IOException {
         response.setContentType("application/json");
         response.getWriter().write(new Gson().toJson(new ResponseMessage(message)));
     }
 
     // Send error response with message
-    private void sendErrorResponse(HttpServletResponse response, String message) throws IOException {
+    void sendErrorResponse(HttpServletResponse response, String message) throws IOException {
         response.setContentType("application/json");
         response.getWriter().write(new Gson().toJson(new ResponseMessage(message)));
     }
+
+
 
     // Response message class for consistent JSON response
     private static class ResponseMessage {

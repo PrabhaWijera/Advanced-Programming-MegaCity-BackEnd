@@ -11,7 +11,7 @@ import java.util.List;
 public class CarServiceImpl implements CarService {
     private CarDAO carDAOimpl = new CarDAOimpl();
     @Override
-    public void addCar(CarDTO carDTO) {
+    public CarDTO addCar(CarDTO carDTO) {
         // Convert DTO to Entity (Car)
         Car car = new Car();
         car.setName(carDTO.getName());
@@ -22,6 +22,7 @@ public class CarServiceImpl implements CarService {
 
         // Persist car in the database
         carDAOimpl.addCar(car);
+        return carDTO;
     }
 
     @Override
