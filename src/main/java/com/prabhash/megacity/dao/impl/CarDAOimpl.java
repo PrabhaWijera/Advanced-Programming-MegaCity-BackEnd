@@ -1,13 +1,14 @@
 package com.prabhash.megacity.dao.impl;
 
 import com.prabhash.megacity.config.DBConfig;
+import com.prabhash.megacity.dao.CarDAO;
 import com.prabhash.megacity.entity.Car;
 
 import java.sql.*;
 import java.util.ArrayList;
 import java.util.List;
 
-public class CarDAO {
+public class CarDAOimpl implements CarDAO {
 
     private static final String ADD_CAR_SQL = "INSERT INTO cars (name, model, plate_number, year, status) VALUES (?, ?, ?, ?, ?)";
     private static final String GET_CAR_BY_ID_SQL = "SELECT * FROM cars WHERE id = ?";
@@ -108,13 +109,15 @@ public class CarDAO {
         }
     }
 
-    public void updateCarStatus(int carId, String status) throws SQLException {
+    public void updateCarStatus(int carId, String status)  {
         String sql = "UPDATE cars SET status = ? WHERE id = ?";
         try (Connection conn = DBConfig.getConnection();
                 PreparedStatement ps = conn.prepareStatement(sql)) {
             ps.setString(1, status);
             ps.setInt(2, carId);
             ps.executeUpdate();
+        } catch (SQLException e) {
+            throw new RuntimeException(e);
         }
     }
 

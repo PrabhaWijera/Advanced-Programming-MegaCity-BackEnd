@@ -1,6 +1,7 @@
 package com.prabhash.megacity.service.impl;
 
-import com.prabhash.megacity.dao.impl.CarDAO;
+import com.prabhash.megacity.dao.CarDAO;
+import com.prabhash.megacity.dao.impl.CarDAOimpl;
 import com.prabhash.megacity.dto.CarDTO;
 import com.prabhash.megacity.entity.Car;
 import com.prabhash.megacity.service.CarService;
@@ -8,7 +9,7 @@ import com.prabhash.megacity.service.CarService;
 import java.util.List;
 
 public class CarServiceImpl implements CarService {
-    private CarDAO carDAO = new CarDAO();
+    private CarDAO carDAOimpl = new CarDAOimpl();
     @Override
     public void addCar(CarDTO carDTO) {
         // Convert DTO to Entity (Car)
@@ -20,12 +21,12 @@ public class CarServiceImpl implements CarService {
         car.setStatus(carDTO.getStatus());
 
         // Persist car in the database
-        carDAO.addCar(car);
+        carDAOimpl.addCar(car);
     }
 
     @Override
     public CarDTO getCarById(int id) {
-        Car car = carDAO.getCarById(id);
+        Car car = carDAOimpl.getCarById(id);
         if (car != null) {
             return new CarDTO(car.getId(), car.getName(), car.getModel(), car.getPlate_number(), car.getYear(), car.getStatus());
         }
@@ -34,7 +35,7 @@ public class CarServiceImpl implements CarService {
 
     @Override
     public List<CarDTO> getAllCars() {
-        List<Car> cars = carDAO.getAllCars();
+        List<Car> cars = carDAOimpl.getAllCars();
         return cars.stream()
                 .map(car -> new CarDTO(car.getId(), car.getName(), car.getModel(), car.getPlate_number(), car.getYear(), car.getStatus()))
                 .toList();
@@ -52,12 +53,12 @@ public class CarServiceImpl implements CarService {
         car.setStatus(carDTO.getStatus());
 
         // Update car in the database
-        carDAO.updateCar(car);
+        carDAOimpl.updateCar(car);
     }
 
     @Override
     public void deleteCar(int id) {
-        carDAO.deleteCar(id);
+        carDAOimpl.deleteCar(id);
     }
 
 
