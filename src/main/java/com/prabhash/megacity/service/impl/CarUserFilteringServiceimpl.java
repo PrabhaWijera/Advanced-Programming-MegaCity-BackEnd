@@ -1,6 +1,7 @@
 package com.prabhash.megacity.service.impl;
 
-import com.prabhash.megacity.dao.impl.CarUserFilteringDAO;
+import com.prabhash.megacity.dao.CarUserFilteringDAO;
+import com.prabhash.megacity.dao.impl.CarUserFilteringDAOimpl;
 import com.prabhash.megacity.dto.CarDTO;
 import com.prabhash.megacity.entity.Car;
 import com.prabhash.megacity.service.CarUserFilteringService;
@@ -10,7 +11,7 @@ import java.util.stream.Collectors;
 
 public class CarUserFilteringServiceimpl implements CarUserFilteringService {
 
-    private CarUserFilteringDAO carDAO = new CarUserFilteringDAO();
+    private CarUserFilteringDAO carDAO = new CarUserFilteringDAOimpl();
 
     @Override
     public List<CarDTO> getAllCars() {

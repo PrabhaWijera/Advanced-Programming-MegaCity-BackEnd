@@ -1,13 +1,14 @@
 package com.prabhash.megacity.dao.impl;
 
 import com.prabhash.megacity.config.DBConfig;
+import com.prabhash.megacity.dao.CarUserFilteringDAO;
 import com.prabhash.megacity.entity.Car;
 
 import java.sql.*;
 import java.util.ArrayList;
 import java.util.List;
 
-public class CarUserFilteringDAO {
+public class CarUserFilteringDAOimpl implements CarUserFilteringDAO {
     private static final String GET_ALL_CARS_SQL = "SELECT id, name, model, plate_number, year, status FROM cars";
     private static final String GET_CAR_BY_ID_SQL = "SELECT id, name, model, plate_number, year, status FROM cars WHERE id = ?";
     private static final String FILTER_CARS_BY_STATUS_SQL = "SELECT id, name, model, plate_number, year, status FROM cars WHERE status = ?";
