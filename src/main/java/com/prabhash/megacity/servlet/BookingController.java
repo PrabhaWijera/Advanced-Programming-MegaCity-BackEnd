@@ -22,10 +22,10 @@ import java.util.List;
 
 @WebServlet("/booking/*")
 public class BookingController extends HttpServlet {
-    private BookingService bookingService = new BookingServiceImpl();
+    public BookingService bookingService = new BookingServiceImpl();
     private Gson gson = new Gson();
 
-    private final UserManageService userService = new UserManageServiceimpl();
+    UserManageService userService = new UserManageServiceimpl();
     EmailService emailService = new EmailService();
 
     // Handle CREATE Booking (POST)
