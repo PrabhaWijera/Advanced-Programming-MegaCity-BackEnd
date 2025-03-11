@@ -7,6 +7,7 @@ import com.prabhash.megacity.service.ImageService;
 import com.prabhash.megacity.service.impl.CarServiceImpl;
 import com.prabhash.megacity.service.impl.ImageServiceImpl;
 import com.google.gson.Gson;
+import com.prabhash.megacity.validations.ValidateCar;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.annotation.MultipartConfig;
 import jakarta.servlet.annotation.WebServlet;
@@ -17,6 +18,7 @@ import jakarta.servlet.http.Part;
 
 import java.io.File;
 import java.io.IOException;
+import java.io.PrintWriter;
 import java.nio.file.Path;
 import java.sql.Timestamp;
 import java.util.List;
@@ -71,6 +73,27 @@ public class CarImageServlet extends HttpServlet {
         String plate_number = request.getParameter("plate_number");
         int year = Integer.parseInt(request.getParameter("year"));
         String status = request.getParameter("status");
+
+        System.out.println("Add car " + name + ", " + model + ", " + plate_number + ", " + year + ", " + status);
+        // Validate data using the ValidateCar class
+        String errorMessage = null;
+
+        if (!ValidateCar.isValidCarName(name)) {
+            errorMessage = "Car name must be at least 2 characters long!";
+        } else if (!ValidateCar.isValidCarModel(model)) {
+            errorMessage = "Car model must be at least 2 characters long!";
+        }   else if (!ValidateCar.isValidYear(year)) {
+            errorMessage = "Year must be between 1900 and the current year!";
+        } else if (!ValidateCar.isValidStatus(status)) {
+            errorMessage = "Car status is required!";
+        }
+
+        if(errorMessage  != null){
+            response.setStatus(HttpServletResponse.SC_BAD_REQUEST); // 400 Bad Request
+            PrintWriter out = response.getWriter();
+            out.print("{\"error\": \"" + errorMessage + "\"}");
+            out.flush();
+        }
 
         // Create CarDTO object
         CarDTO carDTO = new CarDTO(0, name, model, plate_number, year, status);
