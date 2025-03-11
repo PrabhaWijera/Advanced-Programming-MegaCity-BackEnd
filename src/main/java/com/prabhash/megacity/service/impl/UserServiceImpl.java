@@ -1,30 +1,31 @@
 package com.prabhash.megacity.service.impl;
 
-import com.prabhash.megacity.dao.UserDAO;
+import com.prabhash.megacity.dao.UserDao;
+import com.prabhash.megacity.dao.impl.UserDAOimpl;
 import com.prabhash.megacity.dto.ProfileImageDTO;
 import com.prabhash.megacity.entity.ProfileImage;
 import com.prabhash.megacity.entity.User;
 import com.prabhash.megacity.service.UserService;
 
 public class UserServiceImpl implements UserService {
-    private final UserDAO userDAO = new UserDAO();
+    private final UserDao userDAOimpl = new UserDAOimpl();
 
     @Override
     public boolean registerUser(User user) {
         System.out.println(user+"service impl");
-        return userDAO.save(user);
+        return userDAOimpl.save(user);
     }
 
     @Override
     public User authenticateUser(String email, String password) {
-        User user = userDAO.findByEmail(email); // Get user by email
+        User user = userDAOimpl.findByEmail(email); // Get user by email
         System.out.println("authenticateUser"+email+password);
         if (user == null) {
             return null; // If no user is found, return null
         }
 
         // Check if password matches using BCrypt
-        if (userDAO.checkPassword(user, password)) {
+        if (userDAOimpl.checkPassword(user, password)) {
             System.out.println("authenticateUser BCrypt "+email+password);
             return user; // Return user if password is correct
         }
@@ -35,12 +36,12 @@ public class UserServiceImpl implements UserService {
 
     @Override
     public User getUserByUsername(String email) {
-        return userDAO.findByEmail(email);
+        return userDAOimpl.findByEmail(email);
     }
 
     @Override
     public User getUserByEmail(String email) {
-        return userDAO.findByEmail(email);
+        return userDAOimpl.findByEmail(email);
     }
 //    @Override
 //    public UserDTO getUserByUsername(String username) {
@@ -52,12 +53,12 @@ public class UserServiceImpl implements UserService {
 
     @Override
     public boolean uploadProfileImage(String email, String imagePath) {
-        return userDAO.insertProfileImage(email, imagePath);  // Save profile image to DB
+        return userDAOimpl.insertProfileImage(email, imagePath);  // Save profile image to DB
     }
 
     @Override
     public ProfileImageDTO getProfileImage(String email) {
-        ProfileImage profileImage = userDAO.getProfileImage(email);  // Retrieve profile image from DB
+        ProfileImage profileImage = userDAOimpl.getProfileImage(email);  // Retrieve profile image from DB
         if (profileImage != null) {
             ProfileImageDTO profileImageDTO = new ProfileImageDTO();
             profileImageDTO.setImageId(profileImage.getImageId());

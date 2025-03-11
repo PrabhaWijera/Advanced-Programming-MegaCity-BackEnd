@@ -1,6 +1,7 @@
 package com.prabhash.megacity.service.impl;
 
 import com.prabhash.megacity.dao.BookingDAO;
+import com.prabhash.megacity.dao.impl.BookingDAOimpl;
 import com.prabhash.megacity.dto.BookingDTO;
 import com.prabhash.megacity.entity.Booking;
 import com.prabhash.megacity.service.BookingService;
@@ -11,7 +12,7 @@ import java.text.SimpleDateFormat;
 import java.util.List;
 
 public class BookingServiceImpl implements BookingService {
-    private BookingDAO bookingDAO = new BookingDAO();
+    private BookingDAO bookingDAOimpl = new BookingDAOimpl();
 
     // Convert DTO to Entity
 
@@ -39,7 +40,7 @@ public class BookingServiceImpl implements BookingService {
     public boolean createBooking(BookingDTO bookingDTO) {
         try {
             Booking booking = toEntity(bookingDTO);
-            return bookingDAO.createBooking(booking);
+            return bookingDAOimpl.createBooking(booking);
         } catch (ParseException e) {
             e.printStackTrace();
             return false;
@@ -50,26 +51,26 @@ public class BookingServiceImpl implements BookingService {
     // READ Booking by ID
     @Override
     public Booking getBookingById(int id) {
-        return bookingDAO.getBookingById(id);
+        return bookingDAOimpl.getBookingById(id);
     }
 
     // READ All Bookings
     @Override
     public List<Booking> getAllBookings() {
-        return bookingDAO.getAllBookings();
+        return bookingDAOimpl.getAllBookings();
     }
 
     // UPDATE Booking
     @Override
     public boolean updateBooking(int id, BookingDTO bookingDTO) {
         try {
-            Booking existingBooking = bookingDAO.getBookingById(id);
+            Booking existingBooking = bookingDAOimpl.getBookingById(id);
             if (existingBooking != null) {
                 existingBooking.setStartDate(new SimpleDateFormat("yyyy-MM-dd").parse(String.valueOf(bookingDTO.getStartDate())));
                 existingBooking.setEndDate(new SimpleDateFormat("yyyy-MM-dd").parse(String.valueOf(bookingDTO.getEndDate())));
                 existingBooking.setTotalAmount(bookingDTO.getTotalAmount());
                 existingBooking.setStatus(bookingDTO.getStatus());
-                return bookingDAO.updateBooking(existingBooking);
+                return bookingDAOimpl.updateBooking(existingBooking);
             }
         } catch (ParseException e) {
             e.printStackTrace();
@@ -80,6 +81,6 @@ public class BookingServiceImpl implements BookingService {
     // DELETE Booking
     @Override
     public boolean deleteBooking(int id) {
-        return bookingDAO.deleteBooking(id);
+        return bookingDAOimpl.deleteBooking(id);
     }
 }

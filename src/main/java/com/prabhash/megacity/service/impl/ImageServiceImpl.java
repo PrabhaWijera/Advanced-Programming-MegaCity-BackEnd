@@ -1,6 +1,6 @@
 package com.prabhash.megacity.service.impl;
 
-import com.prabhash.megacity.dao.ImageDAO;
+import com.prabhash.megacity.dao.impl.ImageDAO;
 import com.prabhash.megacity.dto.ImageDTO;
 import com.prabhash.megacity.entity.Image;
 import com.prabhash.megacity.service.ImageService;

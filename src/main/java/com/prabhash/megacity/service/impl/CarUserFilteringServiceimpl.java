@@ -1,6 +1,6 @@
 package com.prabhash.megacity.service.impl;
 
-import com.prabhash.megacity.dao.CarUserFilteringDAO;
+import com.prabhash.megacity.dao.impl.CarUserFilteringDAO;
 import com.prabhash.megacity.dto.CarDTO;
 import com.prabhash.megacity.entity.Car;
 import com.prabhash.megacity.service.CarUserFilteringService;

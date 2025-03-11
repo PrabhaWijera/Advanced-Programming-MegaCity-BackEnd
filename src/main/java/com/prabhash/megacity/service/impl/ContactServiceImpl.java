@@ -1,7 +1,7 @@
 package com.prabhash.megacity.service.impl;
 
 import com.prabhash.megacity.dao.ContactDAO;
-import com.prabhash.megacity.dao.ContactDAOImpl;
+import com.prabhash.megacity.dao.impl.ContactDAOImpl;
 import com.prabhash.megacity.dto.ContactDTO;
 import com.prabhash.megacity.service.ContactService;
 

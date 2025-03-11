@@ -1,7 +1,7 @@
 package com.prabhash.megacity.service.impl;
 
 import com.prabhash.megacity.dao.PaymentDAO;
-import com.prabhash.megacity.dao.PaymentDAOImpl;
+import com.prabhash.megacity.dao.impl.PaymentDAOImpl;
 import com.prabhash.megacity.entity.Payment;
 import com.prabhash.megacity.service.PaymentService;
 

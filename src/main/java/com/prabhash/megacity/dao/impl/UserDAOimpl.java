@@ -1,13 +1,14 @@
-package com.prabhash.megacity.dao;
+package com.prabhash.megacity.dao.impl;
 
 import com.prabhash.megacity.config.DBConfig;
+import com.prabhash.megacity.dao.UserDao;
 import com.prabhash.megacity.entity.ProfileImage;
 import com.prabhash.megacity.entity.User;
 import org.mindrot.jbcrypt.BCrypt;
 
 import java.sql.*;
 
-public class UserDAO {
+public class UserDAOimpl implements UserDao {
 
     // Save user with hashed password
     public boolean save(User user) {
@@ -125,7 +126,7 @@ public class UserDAO {
 
 
 // for booking
-    public User getRandomDriver() throws SQLException {
+    public User getRandomDriver() {
         String sql = "SELECT * FROM users WHERE role = 'driver' ORDER BY RAND() LIMIT 1";
         try (Connection conn = DBConfig.getConnection();
                 PreparedStatement ps = conn.prepareStatement(sql)) {
@@ -140,10 +141,12 @@ public class UserDAO {
                 user.setRole(rs.getString("role"));
                 return user;
             }
+        } catch (SQLException e) {
+            throw new RuntimeException(e);
         }
         return null;
     }
-    public User getUserById(int id) throws SQLException {
+    public User getUserById(int id)  {
         String sql = "SELECT * FROM users WHERE id = ?";
         try (Connection conn = DBConfig.getConnection();
                 PreparedStatement ps = conn.prepareStatement(sql)) {
@@ -159,6 +162,8 @@ public class UserDAO {
                 user.setRole(rs.getString("role"));
                 return user;
             }
+        } catch (SQLException e) {
+            throw new RuntimeException(e);
         }
         return null;
     }

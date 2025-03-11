@@ -1,6 +1,6 @@
 package com.prabhash.megacity.service.impl;
 
-import com.prabhash.megacity.dao.UserDAO;
+import com.prabhash.megacity.dao.impl.UserDAOimpl;
 import com.prabhash.megacity.entity.User;
 import com.prabhash.megacity.util.filters.JwtUtil;
 import com.prabhash.megacity.service.PasswordResetService;
@@ -10,12 +10,12 @@ import java.util.Properties;
 
 public class PasswordResetServiceImpl implements PasswordResetService {
 
-    private final UserDAO userDAO = new UserDAO();
+    private final UserDAOimpl userDAOimpl = new UserDAOimpl();
 
     @Override
     public boolean generateResetToken(String email) {
         // Find the user by email
-        User user = userDAO.findByEmail(email);
+        User user = userDAOimpl.findByEmail(email);
         if (user == null) {
             return false;  // User not found
         }
@@ -77,13 +77,13 @@ public class PasswordResetServiceImpl implements PasswordResetService {
             String username = JwtUtil.verifyToken(token).getSubject();
 
             // Find the user by username
-            User user = userDAO.findByEmail(username);
+            User user = userDAOimpl.findByEmail(username);
             if (user == null) {
                 return false;
             }
 
             // Update the password
-            return userDAO.updatePassword(user.getEmail(), newPassword);
+            return userDAOimpl.updatePassword(user.getEmail(), newPassword);
         } catch (Exception e) {
             e.printStackTrace();
             return false;

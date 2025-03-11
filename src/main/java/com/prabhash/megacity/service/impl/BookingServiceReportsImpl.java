@@ -1,6 +1,6 @@
 package com.prabhash.megacity.service.impl;
 
-import com.prabhash.megacity.dao.BookingDAO;
+import com.prabhash.megacity.dao.impl.BookingDAOimpl;
 import com.prabhash.megacity.entity.Booking;
 import com.prabhash.megacity.service.BookingServiceReports;
 import net.sf.jasperreports.engine.data.JRBeanCollectionDataSource;
@@ -8,12 +8,12 @@ import net.sf.jasperreports.engine.data.JRBeanCollectionDataSource;
 import java.util.List;
 
 public class BookingServiceReportsImpl implements BookingServiceReports {
-    private BookingDAO bookingDAO = new BookingDAO();
+    private BookingDAOimpl bookingDAOimpl = new BookingDAOimpl();
 
 
     @Override
     public JRBeanCollectionDataSource generateIndividualBookingReport(int bookingId) {
-        Booking booking = bookingDAO.getBookingById(bookingId); // Get booking by ID
+        Booking booking = bookingDAOimpl.getBookingById(bookingId); // Get booking by ID
 
         // If no booking is found with that ID, return null
         if (booking == null) {

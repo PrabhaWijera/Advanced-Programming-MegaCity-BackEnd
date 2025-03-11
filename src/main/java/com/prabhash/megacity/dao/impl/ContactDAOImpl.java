@@ -1,6 +1,7 @@
-package com.prabhash.megacity.dao;
+package com.prabhash.megacity.dao.impl;
 
 import com.prabhash.megacity.config.DBConfig;
+import com.prabhash.megacity.dao.ContactDAO;
 import com.prabhash.megacity.dto.ContactDTO;
 
 import java.sql.Connection;
