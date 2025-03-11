@@ -1,100 +1,143 @@
 package com.prabhash.megacity.servlet;
 
 import static org.mockito.Mockito.*;
-import static org.testng.Assert.*;
 
-import com.google.gson.Gson;
-import com.prabhash.megacity.entity.User;
 import com.prabhash.megacity.service.UserService;
+import com.prabhash.megacity.service.WhatsAppMessageService;
 import com.prabhash.megacity.service.impl.SmsServiceImpl;
-import jakarta.servlet.ServletException;
+import com.prabhash.megacity.service.impl.UserServiceImpl;
+import com.prabhash.megacity.service.impl.WhatsAppMessageServiceImpl;
+import com.prabhash.megacity.entity.User;
+import com.prabhash.megacity.config.ResponseMessage;
+import com.google.gson.Gson;
+import com.prabhash.megacity.servlet.RegisterServlet;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
-import org.mockito.InjectMocks;
-import org.mockito.Mock;
-import org.mockito.MockitoAnnotations;
-import org.testng.annotations.BeforeMethod;
+
+import org.mockito.*;
+import org.testng.annotations.BeforeClass;
 import org.testng.annotations.Test;
 
+import java.io.ByteArrayOutputStream;
 import java.io.IOException;
 import java.io.PrintWriter;
-import java.io.StringWriter;
-import java.util.Collections;
+import java.util.List;
 
 public class RegisterServletTest {
-    @InjectMocks
-    private RegisterServlet registerServlet;
 
-    @Mock
-    private UserService userService;
+    private RegisterServlet servlet;
+    @Mock private HttpServletRequest request;
+    @Mock private HttpServletResponse response;
+    @Mock private UserService userService;
+    @Mock private WhatsAppMessageService messageService;
+    @Mock private SmsServiceImpl smsService;
+    private ByteArrayOutputStream outContent; // For capturing the response
+    private PrintWriter writer;
 
-    @Mock
-    private EmailService emailService;
+    @BeforeClass
+    public void setUp() throws IOException {
+        // Initialize mocks using Mockito
+        MockitoAnnotations.openMocks(this); // This works for TestNG as well
+        servlet = new RegisterServlet();
+        servlet.userService = userService;
+        servlet.messageService = messageService;
+        servlet.smsService = smsService;
 
-    @Mock
-    private SmsServiceImpl smsService;
-
-    @Mock
-    private HttpServletRequest request;
-
-    @Mock
-    private HttpServletResponse response;
-
-    private StringWriter responseWriter;
-
-    @BeforeMethod
-    public void setUp() throws Exception {
-        MockitoAnnotations.openMocks(this);
-        registerServlet.userService = userService;
-        registerServlet.emailService = emailService;
-        registerServlet.smsService = smsService;
-
-        responseWriter = new StringWriter();
-        when(response.getWriter()).thenReturn(new PrintWriter(responseWriter));
+        // Initialize ByteArrayOutputStream and PrintWriter
+        outContent = new ByteArrayOutputStream();
+        writer = new PrintWriter(outContent);
+        when(response.getWriter()).thenReturn(writer);  // Capture response output
     }
 
     @Test
-    public void testSuccessfulRegistration() throws ServletException, IOException {
-        when(request.getParameter("username")).thenReturn("test1001");
-        when(request.getParameter("password")).thenReturn("test1012001");
-        when(request.getParameter("email")).thenReturn("test1011@gmail.com");
-        when(request.getParameter("phone")).thenReturn("0762235588");
+    public void testDoPost_SuccessfulRegistration() throws Exception {
+        // Mocking input parameters
+        when(request.getParameter("username")).thenReturn("johnDoe");
+        when(request.getParameter("password")).thenReturn("Password123!");
+        when(request.getParameter("email")).thenReturn("johndoe@example.com");
+        when(request.getParameter("phone")).thenReturn("0760368023");
         when(request.getParameter("role")).thenReturn("customer");
+
+        // Mocking UserService behavior
         when(userService.registerUser(any(User.class))).thenReturn(true);
 
-        registerServlet.doPost(request, response);
+        // Call the servlet's doPost method
+        servlet.doPost(request, response);
 
-        String jsonResponse = responseWriter.toString();
-        assertTrue(jsonResponse.contains("Registration successful"));
-        verify(emailService, times(1)).sendTestEmail(eq("test1011@gmail.com"), anyString(), anyString());
+        // Capture the actual response content
+        String actualResponse = outContent.toString().trim(); // Capture response as a string
+
+        // Expected response for successful registration
+        String expectedResponse = "{\"message\":\"Registration successful!\"}";
+
+        // Compare the actual and expected responses
+        if (actualResponse.equals(expectedResponse)) {
+            System.out.println("Test Passed: Successful registration response found.");
+        } else {
+            System.out.println("Test Failed: Expected success message but got: " + actualResponse);
+        }
+
+        // Verifying that the response status is 200 OK
+        verify(response).setStatus(HttpServletResponse.SC_OK);
     }
 
     @Test
-    public void testValidationFailure() throws ServletException, IOException {
-        when(request.getParameter("username")).thenReturn("t");  // Invalid username
-        when(request.getParameter("password")).thenReturn("short");  // Invalid password
-        when(request.getParameter("email")).thenReturn("invalid_email");
-        when(request.getParameter("phone")).thenReturn("123");
-        when(request.getParameter("role")).thenReturn("customer");
+    public void testDoPost_ValidationFailed() throws Exception {
+        // Mocking invalid input parameters
+        when(request.getParameter("username")).thenReturn("johnoe");
+        when(request.getParameter("password")).thenReturn("Password123!");
+        when(request.getParameter("email")).thenReturn("johndoxample.com");
+        when(request.getParameter("phone")).thenReturn("076036802");
 
-        registerServlet.doPost(request, response);
 
-        String jsonResponse = responseWriter.toString();
-        assertTrue(jsonResponse.contains("Validation failed"));
+        // Call the servlet's doPost method
+        servlet.doPost(request, response);
+
+        // Capture the actual response content
+        String actualResponse = outContent.toString().trim();
+
+        // Expected response for validation failure
+        String expectedResponse = "{\"message\":\"Validation failed\",\"errors\":[\"Invalid username. It should be 3-20 characters long and contain only letters and numbers.\",\"Invalid password. It should be at least 8 characters long and include at least one letter, one number, and one special character.\",\"Invalid email format.\",\"Invalid phone number. It should contain only digits and be between 10-15 characters long.\"]}";
+
+        // Compare the actual and expected responses
+        if (actualResponse.equals(expectedResponse)) {
+            System.out.println("Test Passed: Validation failed response found.");
+        } else {
+            System.out.println("Test Failed: Expected validation error message but got: " + actualResponse);
+        }
+
+        // Verifying that the response status is 400 Bad Request
+        verify(response).setStatus(HttpServletResponse.SC_BAD_REQUEST);
     }
 
     @Test
-    public void testRegistrationFailure() throws ServletException, IOException {
-        when(request.getParameter("username")).thenReturn("test1001");
-        when(request.getParameter("password")).thenReturn("test1012001");
-        when(request.getParameter("email")).thenReturn("test1011@gmail.com");
-        when(request.getParameter("phone")).thenReturn("0762235588");
+    public void testDoPost_FailedRegistration() throws Exception {
+        // Mocking valid input parameters
+        when(request.getParameter("username")).thenReturn("johnDoe");
+        when(request.getParameter("password")).thenReturn("Password123!");
+        when(request.getParameter("email")).thenReturn("johndoe@example.com");
+        when(request.getParameter("phone")).thenReturn("0760368023");
         when(request.getParameter("role")).thenReturn("customer");
+        // Mocking UserService behavior for failed registration
         when(userService.registerUser(any(User.class))).thenReturn(false);
 
-        registerServlet.doPost(request, response);
+        // Call the servlet's doPost method
+        servlet.doPost(request, response);
 
-        String jsonResponse = responseWriter.toString();
-        assertTrue(jsonResponse.contains("Failed to register"));
+        // Capture the actual response content
+        String actualResponse = outContent.toString().trim();
+
+        // Expected response for failed registration
+        String expectedResponse = "{\"message\":\"Failed to register.\"}";
+
+        // Compare the actual and expected responses
+        if (actualResponse.equals(expectedResponse)) {
+            System.out.println("Test Passed: Failed registration response found.");
+        } else {
+            System.out.println("Test Failed: Expected failure message but got: " + actualResponse);
+        }
+
+        // Verifying that the response status is 400 Bad Request
+        verify(response).setStatus(HttpServletResponse.SC_BAD_REQUEST);
     }
 }

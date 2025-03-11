@@ -30,7 +30,7 @@ public class RegisterServlet extends HttpServlet {
 
     SmsServiceImpl smsService = new SmsServiceImpl();
 
-    protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+    public void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
         response.setContentType("application/json");
         response.setCharacterEncoding("UTF-8");
 
