@@ -1,17 +1,17 @@
 package com.prabhash.megacity.dto;
 
 public class ReviewDTO {
-    private String userId;
-    private String email;
-    private String reviewText;
-    private int rating;
+    private int userId;       // Changed from String to int
+    private String email;     // User's email
+    private String reviewText;  // The review text
+    private int rating;       // Rating (1-5)
 
     // Getters and Setters
-    public String getUserId() {
+    public int getUserId() {
         return userId;
     }
 
-    public void setUserId(String userId) {
+    public void setUserId(int userId) {
         this.userId = userId;
     }
 

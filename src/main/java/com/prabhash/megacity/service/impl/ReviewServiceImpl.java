@@ -27,7 +27,7 @@ public class ReviewServiceImpl implements ReviewService {
 
         // Map DTO to Entity
         Review review = new Review();
-        review.setUserId(reviewDTO.getUserId());
+        review.setUserId(String.valueOf(reviewDTO.getUserId()));
         review.setEmail(reviewDTO.getEmail());
         review.setReviewText(reviewDTO.getReviewText());
         review.setRating(reviewDTO.getRating());
@@ -43,7 +43,7 @@ public class ReviewServiceImpl implements ReviewService {
 
         for (Review review : reviews) {
             ReviewDTO dto = new ReviewDTO();
-            dto.setUserId(review.getUserId());
+            dto.setUserId(Integer.parseInt(review.getUserId()));
             dto.setEmail(review.getEmail());
             dto.setReviewText(review.getReviewText());
             dto.setRating(review.getRating());
