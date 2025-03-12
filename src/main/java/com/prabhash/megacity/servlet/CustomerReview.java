@@ -46,6 +46,7 @@ public class CustomerReview extends HttpServlet {
 
         if (reviews != null && !reviews.isEmpty()) {
             response.setStatus(HttpServletResponse.SC_OK);
+            response.setContentType("application/json");
             response.getWriter().write(objectMapper.writeValueAsString(reviews));
         } else {
             response.setStatus(HttpServletResponse.SC_NO_CONTENT);

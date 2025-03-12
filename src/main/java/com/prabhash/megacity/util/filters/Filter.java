@@ -19,6 +19,7 @@ public class Filter implements jakarta.servlet.Filter {
     private static final String EXPOSE_HEADERS = "Access-Control-Expose-Headers";
 
     private static final String ORIGIN = "http://localhost:3000"; // Specify frontend URL
+    private static final String ORIGINS = "https://advanced-programming-mega-city-frontend.vercel.app"; // Specify frontend URL
     private static final String METHODS = "GET, POST, PUT, DELETE, OPTIONS";
     private static final String HEADERS = "Content-Type, Authorization, X-Requested-With";
     private static final String EXPOSED = "Content-Type, Authorization";
@@ -36,6 +37,7 @@ public class Filter implements jakarta.servlet.Filter {
 
         // Set necessary CORS headers
         response.setHeader(ALLOW_ORIGIN, ORIGIN);
+        response.setHeader(ALLOW_ORIGIN, ORIGINS);
         response.setHeader(ALLOW_METHODS, METHODS);
         response.setHeader(ALLOW_HEADERS, HEADERS);
         response.setHeader(ALLOW_CREDENTIALS, "true");
