@@ -1,7 +1,7 @@
 package com.prabhash.megacity.dao;
 
-import com.prabhash.megacity.dto.ContactDTO;
+import com.prabhash.megacity.entity.ContactEntity;
 
 public interface ContactDAO {
-    void saveContact(ContactDTO contactDTO) throws Exception;
+    boolean saveContact(ContactEntity contactEntity);
 }

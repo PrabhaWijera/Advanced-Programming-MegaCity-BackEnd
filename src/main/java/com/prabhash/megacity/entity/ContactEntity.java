@@ -2,12 +2,25 @@ package com.prabhash.megacity.entity;
 
 public class ContactEntity {
 
-    private Long id;
-    private String name;
-    private String email;
-    private String message;
+    private Long id; // Primary key
+    private Long userId; // Foreign key to the user table
+    private String email; // User's email
+    private String name; // User's name
+    private String message; // User's message
 
-    // Getters and setters
+    public ContactEntity() {
+    }
+
+    // Constructor
+    public ContactEntity(Long id, Long userId, String email, String name, String message) {
+        this.id = id;
+        this.userId = userId;
+        this.email = email;
+        this.name = name;
+        this.message = message;
+    }
+
+    // Getters and Setters
     public Long getId() {
         return id;
     }
@@ -16,12 +29,12 @@ public class ContactEntity {
         this.id = id;
     }
 
-    public String getName() {
-        return name;
+    public Long getUserId() {
+        return userId;
     }
 
-    public void setName(String name) {
-        this.name = name;
+    public void setUserId(Long userId) {
+        this.userId = userId;
     }
 
     public String getEmail() {
@@ -30,6 +43,14 @@ public class ContactEntity {
 
     public void setEmail(String email) {
         this.email = email;
+    }
+
+    public String getName() {
+        return name;
+    }
+
+    public void setName(String name) {
+        this.name = name;
     }
 
     public String getMessage() {
