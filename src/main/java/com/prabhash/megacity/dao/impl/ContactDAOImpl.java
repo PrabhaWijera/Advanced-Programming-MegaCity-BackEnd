@@ -5,6 +5,8 @@ import com.prabhash.megacity.dao.ContactDAO;
 import com.prabhash.megacity.entity.ContactEntity;
 
 import java.sql.*;
+import java.util.ArrayList;
+import java.util.List;
 
 public class ContactDAOImpl implements ContactDAO {
 
@@ -26,4 +28,34 @@ public class ContactDAOImpl implements ContactDAO {
             throw new RuntimeException(e);
         }
     }
+
+    @Override
+    public List<ContactEntity> getAllContacts() {
+        List<ContactEntity> contacts = new ArrayList<>();
+        String query = "SELECT * FROM contacts"; // Define your SQL query
+
+        try (Connection conn = DBConfig.getConnection();  // Assuming DBConfig is your database connection utility
+             PreparedStatement stmt = conn.prepareStatement(query);
+             ResultSet resultSet = stmt.executeQuery()) { // Execute the query and get the result set
+
+            // Iterate through the result set to retrieve each contact
+            while (resultSet.next()) {
+                Long id = resultSet.getLong("id");
+                Long userId = resultSet.getLong("user_id");
+                String email = resultSet.getString("email");
+                String name = resultSet.getString("name");
+                String message = resultSet.getString("message");
+
+                // Create a new ContactEntity object and add it to the list
+                ContactEntity contactEntity = new ContactEntity(id, userId, email, name, message);
+                contacts.add(contactEntity);
+            }
+
+        } catch (SQLException e) {
+            e.printStackTrace();  // Handle SQL exceptions properly
+        }
+
+        return contacts;
+    }
+
 }

@@ -7,6 +7,8 @@ import com.prabhash.megacity.entity.ContactEntity;
 import com.prabhash.megacity.service.ContactService;
 
 import java.sql.SQLException;
+import java.util.ArrayList;
+import java.util.List;
 
 public class ContactServiceImpl implements ContactService {
 
@@ -30,5 +32,24 @@ public class ContactServiceImpl implements ContactService {
 
         // Save contact to database
         return contactDAO.saveContact(contactEntity);
+    }
+
+    @Override
+    public List<ContactDTO> getAllContacts() {
+        List<ContactEntity> contactEntities = contactDAO.getAllContacts();
+        List<ContactDTO> contactDTOs = new ArrayList<>();
+
+        for (ContactEntity contactEntity : contactEntities) {
+            ContactDTO contactDTO = new ContactDTO(
+                    contactEntity.getId(),
+                    contactEntity.getUserId(),
+                    contactEntity.getEmail(),
+                    contactEntity.getName(),
+                    contactEntity.getMessage()
+            );
+            contactDTOs.add(contactDTO);
+        }
+
+        return contactDTOs;
     }
 }
